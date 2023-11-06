@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  postgres:
+    container_name: postgres-db
+    image: postgres:14.0-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=abubakir8896
+      - POSTGRES_DB=clothes_market
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - 5434:5432
+  app:
+    container_name: clothes_market
+    build:
+      context: ./
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    ports:
+      - 4001:4000
+    environment:
+      - API_PORT=4000
+      - API_LOCAL_PORT=4000
+      - API_HOST=localhost
+      - TYPEORM_CONNECTION=postgres
+      - TYPEORM_USERNAME=postgres
+      - TYPEORM_PASSWORD=abubakir8896
+      - TYPEORM_DATABASE=clothes_market
+      - TYPEORM_PORT=5432
+      - TYPEORM_LOCAL_PORT=5432
+      - TYPEORM_HOST=postgres
+      - ACCESS_TOKEN_KEY=MyAccesVerySecretKey12345
+      - ACCESS_TOKEN_TIME=24h
+      - REFRESH_TOKEN_KEY=MYREFRESHTOKENACCESS_TOKEN_KEY
+      - REFRESH_TOKEN_TIME=24d
+      - MAILER_HOST=smtp.gmail.com
+      - MAILER_PORT=587
+      - MAILDEV_USER=Abubakir.zikirov8896@gmail.com
+      - MAILDEV_PASS=akvjnpbunbkgthrk
+      - API_HOST=http://localhost:4001
